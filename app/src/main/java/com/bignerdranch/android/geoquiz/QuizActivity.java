@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,11 +14,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
     private static final String KEY_CHEAT = "cheat";
+    private static final String KEY_CHEAT_LIST = "cheat_list";
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
@@ -34,6 +38,8 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_asia, true),
     };
 
+    ArrayList<Integer> mCheat = new ArrayList<>();
+
     private int mCurrentIndex = 0;
     private boolean mIsCheater;
 
@@ -47,8 +53,12 @@ public class QuizActivity extends AppCompatActivity {
 
         int messageResId = 0;
 
-        if (mIsCheater) {
+        if (mIsCheater || mCheat.contains(mCurrentIndex)) {
             messageResId = R.string.judgement_toast;
+            if (!mCheat.contains(mCurrentIndex)) {
+                mCheat.add(mCurrentIndex);
+            }
+            Toast.makeText(this, TextUtils.join(", ", mCheat), Toast.LENGTH_SHORT).show();
         } else {
             if (userPressedTrue == answerIsTrue) {
                 messageResId = R.string.correct_toast;
@@ -67,6 +77,7 @@ public class QuizActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
             mIsCheater = savedInstanceState.getBoolean(KEY_CHEAT, false);
+            mCheat = savedInstanceState.getIntegerArrayList(KEY_CHEAT_LIST);
         }
 
         Log.d(TAG, "onCreate aufgerufen!");
@@ -158,6 +169,7 @@ public class QuizActivity extends AppCompatActivity {
         Log.i(TAG, "onSaveInstanceState AUFGERUFEN!!!!!!");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
         savedInstanceState.putBoolean(KEY_CHEAT, mIsCheater);
+        savedInstanceState.putIntegerArrayList(KEY_CHEAT_LIST, mCheat);
     }
 
     @Override
