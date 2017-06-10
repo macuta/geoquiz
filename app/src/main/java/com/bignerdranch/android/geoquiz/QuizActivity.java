@@ -150,6 +150,7 @@ public class QuizActivity extends AppCompatActivity {
             mIsCheater = CheatActivity.wasAnswerShown(data);
         }
     }
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState)
     {
