@@ -19,6 +19,8 @@ public class CheatActivity extends AppCompatActivity {
     private boolean mAnswerIsTrue;
     private TextView mAnswerTextView;
     private Button mShowAnswer;
+    private TextView mSdkApiLevel;
+    private String mSdkApiLevelText = "API level " + Build.VERSION.SDK_INT;
 
     public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
         Intent i = new Intent(packageContext, CheatActivity.class);
@@ -38,6 +40,7 @@ public class CheatActivity extends AppCompatActivity {
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
         mAnswerTextView = (TextView) findViewById(R.id.answer_text_view);
         mShowAnswer = (Button) findViewById(R.id.show_answer_button);
+        mSdkApiLevel = (TextView) findViewById(R.id.sdk_api_level);
 
         mShowAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +73,8 @@ public class CheatActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mSdkApiLevel.setText(mSdkApiLevelText);
     }
 
     private void setAnswerShownResult(boolean isAnswerShown) {
